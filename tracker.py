@@ -1,5 +1,7 @@
 import requests
 import smtplib
+import schedule
+import time
 from email.mime.text import MIMEText
 from bs4 import BeautifulSoup
 
@@ -61,4 +63,12 @@ def check_gpu_stock():
     except Exception as e:
         print("Error:", e)
 
-check_gpu_stock()
+schedule.every(1).hour.do(check_gpu_stock)
+
+print("Tracker running... . ... checking every hour.")
+check_gpu_stock() #Run Immediately first
+
+while True:
+    schedule.run_pending()
+    time.sleep(60)
+    print(".", end="", flush=True) #Prints a dot every min so you know its alive.
