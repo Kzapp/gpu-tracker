@@ -1,7 +1,24 @@
 import requests
+import smtplib
+from email.mime.text import MIMEText
 from bs4 import BeautifulSoup
 
 MAX_PRICE = int(input("What is your max price?"))  # Change this to whatever your budget is
+def send_email(subject, body):
+    sender = "kzapi47@gmail.com"
+    receiver = "kzapi47@gmail.com"
+    password = "ocpmggurelouaczg"
+
+    msg = MIMEText(body)
+    msg["Subject"] = subject
+    msg["From"] = sender 
+    msg["To"] = receiver
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        server.login(sender, password)
+        server.sendmail(sender, receiver, msg.as_string())
+
+    print("Email Sent!")
 
 def check_gpu_stock():
     url = "https://www.newegg.com/p/pl?q=rtx&N=100007709"
@@ -30,9 +47,11 @@ def check_gpu_stock():
                         print(f"✅ {name.text.strip()}")
                         print(f"   💰 ${price_num}")
                         print("---")
+                        send_email("🎮 GPU ALERT!", f"{name.text.strip()} is available for ${price_num} ")
                         found += 1
-                except:
-                    pass
+                except Exception as e:
+                    print("Error:", e)
+                    
         
         if found == 0:
             print(f"No GPUs found under ${MAX_PRICE}")
