@@ -53,6 +53,8 @@ def check_gpu_stock():
             url = "https://www.newegg.com" + link["href"] if link else "No URL"
             
             price = item.find("li", class_="price-current")  # Grabs the price element
+            stock = item.find("p", class_="item-promo")  # Grabs stock/promo status if available
+            stock_text = stock.text.strip() if stock else "In Stock"  # Defaults to In Stock if not found
 
             if name and price:  # Only proceed if both name and price exist
                 # Cleans the price text by removing commas and dashes
@@ -67,7 +69,8 @@ def check_gpu_stock():
                         print(f"   💰 ${price_num}")        # Print price
                         print("---")
                         # Send email alert with name, price, and direct link
-                        send_email("🎮 GPU ALERT!", f"{name.text.strip()}\nPrice: ${price_num}\nLink: {url}")
+                        send_email("🎮 GPU ALERT!", f"{name.text.strip()}\nPrice: ${price_num}\nStock: {stock_text}\nLink: {url}")
+
                         found += 1  # Increment found counter
                         
                 except Exception as e:
