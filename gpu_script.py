@@ -28,7 +28,7 @@ class GpuStock:
          server.sendmail(self.sender, self.receiver, msg.as_string())
 
 
-  def check_gpu_stock (self) -> None:
+  def check_gpu_stock(self) -> None:
      url = "https://www.newegg.com/p/pl?q=rtx&N=100007709" 
      headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
